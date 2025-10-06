@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body>
+    <form method="POST">
+        <div class="info">
+            <nav class="navbar menu">
+                <div class="logo">
+                    <h1>Laptop <span>Stores</span></h1>
+                </div>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about-us">About</a></li>
+                    <li><a href="/products/list-products">List Product</a></li>
+                </ul>
+            </nav>
+            <div class="container">
+                <h2 class="text">Product Details</h2>
+                <div class="info_card">
+                    <div class="laptop_detail">
+                        <div class="lap_img">
+                            {% if laptop[11] %}
+                            <img src="{{ url_for('static', filename='images/' ~ laptop[11]) }}" 
+                                width="300">
+                            {% else %}
+                            <p>No Image Available</p>
+                            {% endif %}
+                        </div>
+                        <div class="papa_p">
+                            <div>
+                                <p> <span class="font_style">Name:</span> {{ laptop[1] }}</p>
+                                <p> <span class="font_style">Model:</span> {{ laptop[2] }}</p>
+                                <p><span class="font_style">Price:</span> ${{ laptop[3] }}</p>
+                                <!-- <p>Quantity: {{ laptop[4] }}</p> -->
+                                <p><span class="font_style">Cpu:</span> {{ laptop[5] }}</p>
+                                <p><span class="font_style">Ram:</span> {{ laptop[6] }}</p>
+                            </div>
+                            <div>
+                                <p><span class="font_style">Storage: </span>{{ laptop[7] }}</p>
+                                <p><span class="font_style">Screen:</span> {{ laptop[8] }}</p>
+                                <p><span class="font_style">Battery:</span> {{ laptop[9] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <p> {{ laptop[10] }}</p>
+                    </div>
+                    <div class="btns">
+                        <button class="back_left">
+                            <a href="/products/list-products">Back to List</a>
+                        </button>
+                        <button class="buy_right">
+                            <a href="#">Buy Now</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>List product</title>
+    <style>
+        input[name="q"] {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        input[name="q"]:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+
+        button.btn.search {
+            padding: 8px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        button.btn.search:hover {
+            background-color: #0056b3;
+        }
+        
+        
+        select[name="brand"],
+        select[name="sort"] {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            transition: 0.3s;
+        }
+
+        select[name="brand"]:hover,
+        select[name="sort"]:hover {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .price-input {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            width: 100px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .price-input:focus {
+            border-color: #0056b3;
+            background: #f0f8ff;
+        }
+    </style>
+
+</head>
+
+
+
+
+
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <h1>Laptop <span>Stores</span></h1>
+        </div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about-us">About</a></li>
+            <li><a href="/products/list-products">List Product</a></li>
+        </ul>
+    </nav>
+    <div class="content">
+        <div class="card">
+            <h2 style="text-align:center;">Product List</h2>
+            <div class="btns">
+                <div class="rigth_bar">
+                    <form action="{{ url_for('list_products') }}" method="get" style="display:inline;">
+                        <input type="text" name="q" placeholder="Search product..."
+                            value="{{ request.args.get('q','') }}">
+                        <button class="btn search">Search</button>
+                        <select name="brand" onchange="this.form.submit()">
+                            <option value="All" {% if request.args.get('brand')=='All' %}selected{% endif %}>All Brands
+                            </option>
+                            {% for b in brand %}
+                            <option value="{{ b }}" {% if request.args.get('brand')==b %}selected{% endif %}>{{ b }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <select name="sort" onchange="this.form.submit()">
+                            <option value="id_desc" {% if request.args.get('sort')=='id_desc' %}selected{% endif %}>
+                                Newest First</option>
+                            <option value="name_asc" {% if request.args.get('sort')=='name_asc' %}selected{% endif %}>
+                                Name A → Z</option>
+                            <option value="name_desc" {% if request.args.get('sort')=='name_desc' %}selected{% endif %}>
+                                Name Z → A</option>
+                        </select>
+                        <input type="text" name="max_price" placeholder="Max $" value="{{ max_price }}"
+                            class="price-input">
+                    </form>
+                </div>
+                <button class="btn align-right"><a href="/products/add-product">Add product +</a></button>
+            </div>
+            <table>
+                <tr>
+                    <th>Nb. Product</th>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Price($)</th>
+                    <th>Quantity</th>
+                    <th>Quick View</th>
+                    <th>Actions</th>
+                </tr>
+                {% for row in laptop %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>
+                        <button class="btn Check">
+                            <a href="{{ url_for('view_product', product_id=row[0]) }}">Quick View</a>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn update Check">
+                            <a href="{{ url_for('edit_product', product_id=row[0])}}">Edit</a>
+                        </button>
+                        <button class="btn delete">
+                            <a href="{{ url_for('delete_product', product_id=row[0])}}"
+                                onclick="return confirm('Are you sure you want to delete this product?');">
+                                Delete
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="list_buttons">
+                <button class="btn left"> <a href="/">Back to Home</a></button>
+                <button class="btn download">
+                    <a href="{{ url_for('download_products') }}">Download Excel</a>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
